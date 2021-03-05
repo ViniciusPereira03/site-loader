@@ -6,24 +6,46 @@ def createArrayLinks(content):
 
   links = []
   lines = content.split('<')
+  contLinks = 0
 
   for i in range(0, len(lines)):
     if (lines[i][0] == 'a'):
-      if (lines[i][2] == 'h'):
-        if (lines[i][3] == 'r'):
-          splt = lines[i].split('">')
-          link = splt[0].split('"')
-          if (len(link) > 1):
-            link = link[1]
+      if (lines[i].find('href')):
+        splt = lines[i].split('">')
+        link = splt[0].split('href="')
+        if (len(link) > 1):
+          if (link[1].find('"')):
+            link = link[1].split('"')
+            link = link[0]
             link = re.sub('\\\\', '', link)
             link = link.replace('xc3xb3', 'ó')
-            links.append(link)
+            if (not link.find('http')):
+              links.append(link)
+              contLinks = contLinks + 1
           else:
-            link = splt[0].split("'")
             link = link[1]
             link = re.sub('\\\\', '', link)
             link = link.replace('xc3xb3', 'ó')
-            links.append(link)
+            if (not link.find('http')):
+              links.append(link)
+              contLinks = contLinks + 1
+        else:
+          link = splt[0].split("'")
+          link = link[0]
+          if (link.find('"')):
+            link = link.split('"')
+            link = link[0]
+            link = re.sub('\\\\', '', link)
+            link = link.replace('xc3xb3', 'ó')
+            if (not link.find('http')):
+              links.append(link)
+              contLinks = contLinks + 1
+          else:
+            link = re.sub('\\\\', '', link)
+            link = link.replace('xc3xb3', 'ó')
+            if (not link.find('http')):
+              links.append(link)
+              contLinks = contLinks + 1
   return links
 
 
