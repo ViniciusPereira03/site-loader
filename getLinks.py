@@ -52,7 +52,7 @@ def createArrayLinks(content):
 params = sys.argv[1:]
 
 search_link = str(params[0])
-# estado = str(params[1])
+file_name = str(params[1])
 
 response = requests.get(search_link)
 
@@ -60,6 +60,12 @@ if (response.status_code == 200):
   sourceCode = str(response.content)
   sourceCodeString = str(sourceCode)
 
+  print('Carregando links...')
+
   links = createArrayLinks(sourceCodeString)
 
-  print(links)
+  print('Salvando arquivo de texto...')
+  arquivo = open("{}.txt".format(file_name), "a")
+  arquivo.write(str(links))
+  
+  print("Pronto!!")
